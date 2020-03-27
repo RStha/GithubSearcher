@@ -28,25 +28,26 @@ class UserListViewModel {
                 guard let users = response else {
                     return
                 }
-                
-                for user in users {
-                    self.getUserDetails(user: user)
+                for i in 0...users.count - 1 {
+                    self.getUserDetails(user: users[i], isLast: (i == users.count - 1))
                 }
-                print("\(self.users) Users101")
-                self.delegate?.populate(users: self.users)
             } else {
                 self.delegate?.showErrorMessage(errorMessage: error ?? "Unknown Error")
             }
         }
     }
     
-    func getUserDetails(user: User) {
+    func getUserDetails(user: User, isLast: Bool) {
         AlamofireRequests.sharedInstance.GETRequest(url: Api.sharedInstance.getUserDetails(username: user.login)) { (success, response: UserDetails?, error) in
             if success {
                 if let detail = response {
                     var updatedUser = user
                     updatedUser.userDetails = detail
                     self.users.append(updatedUser)
+                    if isLast {
+                        print("\(self.users) Users101")
+                        self.delegate?.populate(users: self.users)
+                    }
                 }
             } else {
                 self.delegate?.showErrorMessage(errorMessage: error ?? "Unknown Error")

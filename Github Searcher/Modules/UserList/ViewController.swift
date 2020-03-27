@@ -13,10 +13,12 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var usersTableView: UITableView!
     
+    // MARK: - Constants
+    let searchController = UISearchController(searchResultsController: nil)
     private let userListViewModel = UserListViewModel()
     
     private var usersArray: [User] = []
-    
+    private var filteredUsersArray: [User] = []
     private var selectedUser: UserDetails!
     
     override func viewDidLoad() {
@@ -35,6 +37,23 @@ class ViewController: UIViewController {
         }
     }
     
+    // MARK: - Private Method For Search Functionality
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filteredUsersArray = usersArray.filter({( item : User) -> Bool in
+           return item.login.lowercased().contains(searchText.lowercased())
+        })
+        usersTableView.reloadData()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "DetailSegue" {
             let vc = segue.destination as! UserDetailsViewController
@@ -43,30 +62,47 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: - TableViewDataSource
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering() {
+            return filteredUsersArray.count
+        }
         return usersArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Cell.userListCell, for: indexPath) as! UsersTableViewCell
-        cell.usernameLbl.text = usersArray[indexPath.row].login
-        if let detail = usersArray[indexPath.row].userDetails {
+        var user: User
+        if isFiltering() {
+            user = filteredUsersArray[indexPath.row]
+        } else {
+            user = usersArray[indexPath.row]
+        }
+        cell.usernameLbl.text = user.login
+        if let detail = user.userDetails {
             cell.repoLbl.text = "Repo: \(detail.publicRepos)"
         }
-        let url = URL(string: usersArray[indexPath.row].avatarURL)
+        let url = URL(string: user.avatarURL)
         cell.userIcon.sd_setImage(with: url, completed: nil)
         return cell
     }
 }
 
+// MARK: - TableViewDelegate
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedUser = usersArray[indexPath.row].userDetails
+        if isFiltering() {
+            selectedUser = filteredUsersArray[indexPath.row].userDetails
+        } else {
+            selectedUser = usersArray[indexPath.row].userDetails
+        }
         performSegue(withIdentifier: "DetailSegue", sender: self)
     }
 }
 
+
+// MARK: - UserListDelegate
 extension ViewController: UserListDelegate {
     func populate(users: [User]) {
         self.usersArray = users
@@ -79,5 +115,12 @@ extension ViewController: UserListDelegate {
         
     }
     
+}
+
+// MARK: - UISearchResultsUpdating Delegate
+extension ViewController: UISearchResultsUpdating, UISearchBarDelegate {
     
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
 }
