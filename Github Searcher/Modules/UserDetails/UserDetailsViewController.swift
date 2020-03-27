@@ -53,7 +53,7 @@ class UserDetailsViewController: UIViewController {
 
 extension UserDetailsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return reposArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -68,7 +68,17 @@ extension UserDetailsViewController: UITableViewDataSource {
 
 extension UserDetailsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        guard let details = userDetails else {
+            return
+        }
+        guard let url = URL(string: details.reposURL) else {
+            return
+        }
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, completionHandler: { (success) in
+                print("Settings opened: \(success)")
+            })
+        }
     }
 }
 
