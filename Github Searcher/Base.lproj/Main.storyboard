@@ -88,7 +88,7 @@
                     <navigationItem key="navigationItem" title="Github Searcher" id="nzw-4Z-DdH"/>
                     <connections>
                         <outlet property="usersTableView" destination="5ar-6E-oHu" id="WQD-o0-Xg0"/>
-                        <segue destination="SmR-Ge-x0K" kind="show" id="9Nh-L2-V0R"/>
+                        <segue destination="SmR-Ge-x0K" kind="show" identifier="DetailSegue" id="9Nh-L2-V0R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
