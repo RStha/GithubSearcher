@@ -18,7 +18,9 @@ class AlamofireRequests {
         _ response : T?,
         _ error: String?) -> Void){
         
-        Alamofire.request(URL(string: url)!, method: .get)
+        Alamofire.request(URL(string: url)!,
+                          method: .get,
+                          headers: ["Authorization": "token 8dc7746b0f768a954a6bd44750d57b33e2402d96"])
             .responseJSON { (response) in
                 
                 switch(response.result) {

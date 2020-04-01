@@ -9,55 +9,53 @@
 import UIKit
 import SDWebImage
 
-class ViewController: UIViewController {
-
+class ViewController: BaseViewController {
+    
+    // MARK: - IBOutlets
     @IBOutlet weak var usersTableView: UITableView!
     
     // MARK: - Constants
     let searchController = UISearchController(searchResultsController: nil)
     private let userListViewModel = UserListViewModel()
     
+    // MARK: - Variables
     private var usersArray: [User] = []
-    private var filteredUsersArray: [User] = []
-    private var selectedUser: UserDetails!
+    private var selectedUser: User!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         userListViewModel.delegate = self
-        fetchUsers()
+        setupSearchBar()
     }
     
-    func fetchUsers() {
-        if let users: [User] = USER_DEFAULTS.object(forKey: "USERS") as? [User] {
-            print(users)
-            usersArray = users
-            usersTableView.reloadData()
-        } else {
-            userListViewModel.getUsers()
-        }
+    func setupSearchBar() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = ConstantString.userSearch
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
+    
+    func fetchUsersWith(char: String) {
+        userListViewModel.searchUsersWith(char: char)
     }
     
     // MARK: - Private Method For Search Functionality
-    func isFiltering() -> Bool {
-        return searchController.isActive && !searchBarIsEmpty()
-    }
-    
-    func searchBarIsEmpty() -> Bool {
-        // Returns true if the text is empty or nil
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        filteredUsersArray = usersArray.filter({( item : User) -> Bool in
-           return item.login.lowercased().contains(searchText.lowercased())
-        })
-        usersTableView.reloadData()
+        if searchText.count > 0 {
+            fetchUsersWith(char: searchText.lowercased())
+        } else {
+            usersArray = []
+            usersTableView.reloadData()
+        }
     }
     
+    // MARK: - Navigation Method
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "DetailSegue" {
+        if segue.identifier == Segue.detailSegue {
             let vc = segue.destination as! UserDetailsViewController
-            vc.userDetails = selectedUser
+            vc.name = selectedUser.login
         }
     }
 }
@@ -65,26 +63,12 @@ class ViewController: UIViewController {
 // MARK: - TableViewDataSource
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isFiltering() {
-            return filteredUsersArray.count
-        }
         return usersArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Cell.userListCell, for: indexPath) as! UsersTableViewCell
-        var user: User
-        if isFiltering() {
-            user = filteredUsersArray[indexPath.row]
-        } else {
-            user = usersArray[indexPath.row]
-        }
-        cell.usernameLbl.text = user.login
-        if let detail = user.userDetails {
-            cell.repoLbl.text = "Repo: \(detail.publicRepos)"
-        }
-        let url = URL(string: user.avatarURL)
-        cell.userIcon.sd_setImage(with: url, completed: nil)
+        cell.configureCell(with: usersArray[indexPath.row])
         return cell
     }
 }
@@ -92,29 +76,21 @@ extension ViewController: UITableViewDataSource {
 // MARK: - TableViewDelegate
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if isFiltering() {
-            selectedUser = filteredUsersArray[indexPath.row].userDetails
-        } else {
-            selectedUser = usersArray[indexPath.row].userDetails
-        }
-        performSegue(withIdentifier: "DetailSegue", sender: self)
+        selectedUser = usersArray[indexPath.row]
+        performSegue(withIdentifier: Segue.detailSegue, sender: self)
     }
 }
-
 
 // MARK: - UserListDelegate
 extension ViewController: UserListDelegate {
     func populate(users: [User]) {
         self.usersArray = users
-
-        USER_DEFAULTS.set(users, forKey: "USERS")
         self.usersTableView.reloadData()
     }
     
     func showErrorMessage(errorMessage: String) {
-        
+        self.showAlert(title: "Error", message: errorMessage)
     }
-    
 }
 
 // MARK: - UISearchResultsUpdating Delegate

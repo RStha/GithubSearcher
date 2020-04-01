@@ -15,6 +15,7 @@
 		DFA4C8EE242EA75100513DC7 /* Repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA4C8ED242EA75100513DC7 /* Repo.swift */; };
 		DFA4C8F0242EA89900513DC7 /* UserDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA4C8EF242EA89900513DC7 /* UserDetailsViewModel.swift */; };
 		DFA4C8F2242EAA7E00513DC7 /* ReposTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA4C8F1242EAA7E00513DC7 /* ReposTableViewCell.swift */; };
+		DFD937E52434747700B51F70 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD937E42434747700B51F70 /* BaseViewController.swift */; };
 		DFEC9558242E72CC006D39B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFEC9557242E72CC006D39B9 /* AppDelegate.swift */; };
 		DFEC955A242E72CC006D39B9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFEC9559242E72CC006D39B9 /* SceneDelegate.swift */; };
 		DFEC955C242E72CC006D39B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFEC955B242E72CC006D39B9 /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 		DFA4C8ED242EA75100513DC7 /* Repo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repo.swift; sourceTree = "<group>"; };
 		DFA4C8EF242EA89900513DC7 /* UserDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewModel.swift; sourceTree = "<group>"; };
 		DFA4C8F1242EAA7E00513DC7 /* ReposTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposTableViewCell.swift; sourceTree = "<group>"; };
+		DFD937E42434747700B51F70 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		DFEC9554242E72CC006D39B9 /* Github Searcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Github Searcher.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFEC9557242E72CC006D39B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DFEC9559242E72CC006D39B9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +102,14 @@
 			path = TableViewCell;
 			sourceTree = "<group>";
 		};
+		DFD937E32434746300B51F70 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				DFD937E42434747700B51F70 /* BaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		DFEC954B242E72CC006D39B9 = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +148,7 @@
 		DFEC956B242E7A34006D39B9 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				DFD937E32434746300B51F70 /* Base */,
 				DFEC956D242E7A55006D39B9 /* UserDetails */,
 				DFEC956C242E7A44006D39B9 /* UserList */,
 			);
@@ -147,10 +158,9 @@
 		DFEC956C242E7A44006D39B9 /* UserList */ = {
 			isa = PBXGroup;
 			children = (
-				DFEC955B242E72CC006D39B9 /* ViewController.swift */,
 				DFEC9578242E8E33006D39B9 /* User.swift */,
+				DFEC955B242E72CC006D39B9 /* ViewController.swift */,
 				DFEC957A242E8E9F006D39B9 /* UserListViewModel.swift */,
-				DFA4C8E9242E989F00513DC7 /* UserDetails.swift */,
 			);
 			path = UserList;
 			sourceTree = "<group>";
@@ -158,9 +168,10 @@
 		DFEC956D242E7A55006D39B9 /* UserDetails */ = {
 			isa = PBXGroup;
 			children = (
+				DFA4C8ED242EA75100513DC7 /* Repo.swift */,
+				DFA4C8E9242E989F00513DC7 /* UserDetails.swift */,
 				DFA4C8EB242EA67400513DC7 /* UserDetailsViewController.swift */,
 				DFA4C8EF242EA89900513DC7 /* UserDetailsViewModel.swift */,
-				DFA4C8ED242EA75100513DC7 /* Repo.swift */,
 			);
 			path = UserDetails;
 			sourceTree = "<group>";
@@ -327,6 +338,7 @@
 				DFEC9577242E8D3C006D39B9 /* CodableHelper.swift in Sources */,
 				DFA4C8F2242EAA7E00513DC7 /* ReposTableViewCell.swift in Sources */,
 				DFEC955A242E72CC006D39B9 /* SceneDelegate.swift in Sources */,
+				DFD937E52434747700B51F70 /* BaseViewController.swift in Sources */,
 				DFEC9579242E8E33006D39B9 /* User.swift in Sources */,
 				DFA4C8E4242E92B600513DC7 /* Constants.swift in Sources */,
 			);

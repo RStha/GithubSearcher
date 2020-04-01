@@ -14,3 +14,12 @@ struct Cell {
     static var userListCell = "UserListCell"
     static var repoListCell = "RepoListCell"
 }
+
+struct Segue {
+    static var detailSegue = "DetailSegue"
+}
+
+struct ConstantString {
+    static var repoSearch = "Search for User's Repositories"
+    static var userSearch = "Search for Users"
+}

@@ -23,5 +23,11 @@ class ReposTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func configureCell(with repo: Repo) {
+        repoName.text = repo.name
+        fork.text = "\(repo.forks) Forks"
+        star.text = "\(repo.stargazersCount) Stars"
+    }
 
 }

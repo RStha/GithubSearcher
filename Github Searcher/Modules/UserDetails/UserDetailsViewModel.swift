@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 
 protocol UserReposDelegate {
-    func populate(repos: [Repo])
+    func populate(repos: [Repo], userDetail: UserDetails)
     func showErrorMessage(errorMessage : String)
 }
 
@@ -20,12 +20,23 @@ class UserReposViewModel {
     var delegate : UserReposDelegate?
     
     //MARK: - Network Request
-    func getRepos(username: String) {
+    func getRepos(username: String, userDetails: UserDetails) {
         
         AlamofireRequests.sharedInstance.GETRequest(url: Api.sharedInstance.getReposList(for: username)) { (success, response: [Repo]?, error) in
             if success {
-                USER_DEFAULTS.set(response, forKey: "REPOS")
-                self.delegate?.populate(repos: response ?? [])
+                self.delegate?.populate(repos: response ?? [], userDetail: userDetails)
+            } else {
+                self.delegate?.showErrorMessage(errorMessage: error ?? "Unknown Error")
+            }
+        }
+    }
+    
+    func getUserDetails(username: String) {
+        AlamofireRequests.sharedInstance.GETRequest(url: Api.sharedInstance.getUserDetails(username: username)) { (success, response: UserDetails?, error) in
+            if success {
+                if let detail = response {
+                    self.getRepos(username: username, userDetails: detail)
+                }
             } else {
                 self.delegate?.showErrorMessage(errorMessage: error ?? "Unknown Error")
             }

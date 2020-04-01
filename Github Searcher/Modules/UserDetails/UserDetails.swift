@@ -11,7 +11,7 @@ import Foundation
 // MARK: - UserDetails
 struct UserDetails: Codable {
     let login: String?
-    let id: Int
+    var id: Int
     let nodeID: String
     let avatarURL: String
     let gravatarID: String

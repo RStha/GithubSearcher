@@ -9,7 +9,6 @@
 import Foundation
 
 // MARK: - User
-
 struct User: Codable {
     let login: String
     let id: Int
@@ -23,6 +22,7 @@ struct User: Codable {
     let receivedEventsURL: String
     let type: TypeEnum
     let siteAdmin: Bool
+    let score: Int
     var userDetails: UserDetails?
 
     enum CodingKeys: String, CodingKey {
@@ -43,6 +43,7 @@ struct User: Codable {
         case receivedEventsURL = "received_events_url"
         case type
         case siteAdmin = "site_admin"
+        case score
         case userDetails
     }
 }
@@ -52,4 +53,15 @@ enum TypeEnum: String, Codable {
     case user = "User"
 }
 
-typealias Users = [User]
+// MARK: - Users
+struct Users: Codable {
+    let totalCount: Int
+    let incompleteResults: Bool
+    var items: [User]
+
+    enum CodingKeys: String, CodingKey {
+        case totalCount = "total_count"
+        case incompleteResults = "incomplete_results"
+        case items
+    }
+}

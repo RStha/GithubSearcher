@@ -21,4 +21,14 @@ class UsersTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
+    
+    func configureCell(with user: User) {
+        usernameLbl.text = user.login
+        let url = URL(string: user.avatarURL)
+        userIcon.sd_setImage(with: url, completed: nil)
+        
+        repoLbl.text = "Repo"
+//        repoLbl.text = "Repo: \(user.userDetails?.publicRepos)"
+    }
 }
+

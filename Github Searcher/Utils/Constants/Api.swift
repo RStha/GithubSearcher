@@ -11,15 +11,11 @@ import Foundation
 class Api {
     static let sharedInstance = Api()
 
-    static let baseAuthURL = "https://api.github.com"
+    static let baseURL = "https://api.github.com"
     
-    let userURL = baseAuthURL + "/users"
+    let userURL = baseURL + "/users"
     
-    func loginURL() -> String{
-        return Api.baseAuthURL + "oauth/access-token"
-    }
-    
-    func getUsersList(from: Int) -> String{
+    func getUsersList(from: Int) -> String {
         return userURL + "?since=\(from)"
     }
     
@@ -30,4 +26,9 @@ class Api {
     func getReposList(for username: String) -> String{
         return userURL + "/\(username)/repos"
     }
+    
+    func searchGithubUser(with chars: String, page: Int) -> String {
+        return Api.baseURL + "/search/users?q=\(chars)&page=\(page)"
+    }
+    
 }
